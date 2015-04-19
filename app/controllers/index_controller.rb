@@ -15,10 +15,11 @@ get "/" do
   redirect Instagram.authorize_url(:redirect_uri => CALLBACK_URL)
 end
 
-# on authorize send callback url
-get "/oauth/connect" do
-  redirect Instagram.authorize_url(:redirect_uri => CALLBACK_URL)
-end
+# have href to this if decide to have homepage with link
+# # on authorize send callback url
+# get "/oauth/connect" do
+#   redirect Instagram.authorize_url(:redirect_uri => CALLBACK_URL)
+# end
 
 # save access token in sessions and redirect to index
 get "/oauth/callback" do
