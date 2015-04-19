@@ -34,6 +34,50 @@ end
 get "/index" do
   client = Instagram.client(access_token: session[:access_token])
   @user = client.user
+
+  # create user if new user, reset profile pic and pic counteither way
+  if !User.where(username: @user.username).first
+    new_user = User.create(
+      username: @user.username,
+      profile_pic: @user.profile_picture,
+      pic_count: @user.counts.media,
+      )
+  else
+    user = User.where(username: @user.username).first
+    user.profile_pic = @user.profile_picture
+    user.pic_count =  @user.counts.media
+    user.save
+  end
+
+  pp client.user_recent_media[0]
+
+# image location:
+# client.user_recent_media[#]
+
+# .location returns:
+# {"latitude"=>37.781923821, "longitude"=>-122.408287622}
+
+# .tags returns hashtags
+
+# .type returns "image" or video
+
+# .images gives this hash:
+ #  {"low_resolution"=>
+ #  {"url"=>
+ #    "https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s306x306/e15/11142246_666301880162726_1798201019_n.jpg",
+ #   "width"=>306,
+ #   "height"=>306},
+ # "thumbnail"=>
+ #  {"url"=>
+ #    "https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s150x150/e15/11142246_666301880162726_1798201019_n.jpg",
+ #   "width"=>150,
+ #   "height"=>150},
+ # "standard_resolution"=>
+ #  {"url"=>
+ #    "https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/e15/11142246_666301880162726_1798201019_n.jpg",
+ #   "width"=>640,
+ #   "height"=>640}}
+
   erb :index
 end
 
@@ -47,10 +91,10 @@ end
 get "/user_recent_media" do
   client = Instagram.client(access_token: session[:access_token])
   user = client.user
-  p "client"
-  pp client
-  p "user: "
-  pp user
+  # p "client"
+  # pp client
+  # p "user: "
+  # pp user
   html = "<h1>#{user.username}'s recent media</h1>"
   for media_item in client.user_recent_media
     # p media_item

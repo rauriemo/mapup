@@ -64,6 +64,12 @@ var marker = new google.maps.Marker({
     map: map,
 });
 
+var marker_0 = new RichMarker({
+          position: new google.maps.LatLng(39.955083, 4.268875),
+          map: map,
+          content: '<div id="thumbnail-1" class="my-marker"><img width="65" height="40" class="map-thumbnail" src="https://scontent.cdninstagram.com/hphotos-xap1/outbound-distilleryimage8/t0.0-17/OBPTH/cb781f08a33911e39dd512556e1513a4_8.jpg"/></div>'
+});
+
 //event listener for marker click
 google.maps.event.addListener(marker, 'click', function() {
   infowindow.open(map,marker);
