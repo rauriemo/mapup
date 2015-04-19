@@ -7,8 +7,7 @@ enable :sessions
 CALLBACK_URL = "http://localhost:9393/oauth/callback"
 
 Instagram.configure do |config|
-  config.client_id = "98808b1116e84d428f75eff3aafa9637"
-  config.client_secret = "def45127fa5840878ee4e2ee6cd1cfd5"
+  # txt
 end
 
 # redirect to instagram oath
