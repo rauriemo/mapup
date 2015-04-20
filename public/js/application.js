@@ -50,6 +50,50 @@ map.setMapTypeId('map_style');
 var opt = { minZoom: 3};
 map.setOptions(opt);
 
+//ajax request that returns array of user pictures on page refresh
+ $.ajax({
+      type: 'get',
+      url: '/users/self/feed',
+      dataType: "json",
+  }).done(populateMap)
+
+//populate map with markers for each user picture and create infowindows on click
+function populateMap(response) {
+
+  var infoWindow = new google.maps.InfoWindow({content: ""});
+
+  for (var i=0; i<response.length;i++){
+
+    var icon = {
+        url: response[i].thumbnail, // url
+        scaledSize: new google.maps.Size(50, 50), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+    };
+
+    marker = new google.maps.Marker({
+          position: {
+            lat: response[i].location.latitude,
+            lng: response[i].location.longitude},
+          map: map,
+          icon: icon,
+    })
+
+    var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\">";
+
+      bindInfoWindow(marker, map,
+       infoWindow, contentString);
+  }
+
+}
+
+function bindInfoWindow(marker, map, infowindow, description) {
+    google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(description);
+        infowindow.open(map, marker);
+    });
+}
+
 //set div to be used when you click on marker
 var contentString ='<div id="picture"></div>'
 
@@ -59,23 +103,19 @@ var infowindow = new google.maps.InfoWindow({
 });
 
 //general format for creating markers
-var marker = new google.maps.Marker({
-    position: myLatlng,
-    map: map,
-});
-
-var marker_0 = new RichMarker({
-          position: new google.maps.LatLng(39.955083, 4.268875),
-          map: map,
-          content: '<div id="thumbnail-1" class="my-marker"><img width="65" height="40" class="map-thumbnail" src="https://scontent.cdninstagram.com/hphotos-xap1/outbound-distilleryimage8/t0.0-17/OBPTH/cb781f08a33911e39dd512556e1513a4_8.jpg"/></div>'
-});
+// var marker = new google.maps.Marker({
+//     position: myLatlng,
+//     map: map,
+// });
 
 //event listener for marker click
-google.maps.event.addListener(marker, 'click', function() {
-  infowindow.open(map,marker);
-});
+// google.maps.event.addListener(marker, 'click', function() {
+//   infowindow.open(map,marker);
+// });
 
 }
 
 //event listener to run initialize method on window complete load
 google.maps.event.addDomListener(window, 'load', initialize);
+
+// on initialize function add method that sends ajax call to route, that route should return array of my pictures

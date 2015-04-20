@@ -17,8 +17,8 @@ get "/" do
   redirect Instagram.authorize_url(:redirect_uri => CALLBACK_URL)
 end
 
-# have href to this if decide to have homepage with
-# # on authorize send callback url
+# have href to this if decide to have homepage
+## on authorize send callback url
 # get "/oauth/connect" do
 #   redirect Instagram.authorize_url(:redirect_uri => CALLBACK_URL)
 # end
@@ -35,7 +35,7 @@ get "/index" do
   client = Instagram.client(access_token: session[:access_token])
   @user = client.user
 
-  # create user if new user, reset profile pic and pic counteither way
+  # create user if new user, reset profile pic and pic counter either way
   if !User.where(username: @user.username).first
     new_user = User.create(
       username: @user.username,
@@ -48,8 +48,6 @@ get "/index" do
     user.pic_count =  @user.counts.media
     user.save
   end
-
-  pp client.user_recent_media[0]
 
 # image location:
 # client.user_recent_media[#]
@@ -81,11 +79,22 @@ get "/index" do
   erb :index
 end
 
+# return array with all the images in user media
 get "/users/self/feed" do
   client = Instagram.client(access_token: session[:access_token])
   user = client.user
-  # for media in client.users_self_feed
-
+  media = client.user_recent_media(user.id, {count: user.counts.media})
+  image_container = []
+  media.each do |image|
+    if image.type == "image"
+      image_container << {
+        url: image.images.standard_resolution.url,
+        thumbnail: image.images.thumbnail.url,
+        location: image.location,
+        }
+    end
+  end
+  return image_container.to_json
 end
 
 get "/user_recent_media" do
@@ -143,23 +152,7 @@ get "/location_recent_media" do
   html
 end
 
-get "/media_search" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1>Get a list of media close to a given latitude and longitude</h1>"
-  for media_item in client.media_search("37.7808851","-122.3948632")
-    html << "<img src='#{media_item.images.thumbnail.url}'>"
-  end
-  html
-end
 
-get "/media_popular" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1>Get a list of the overall most popular media items</h1>"
-  for media_item in client.media_popular
-    html << "<img src='#{media_item.images.thumbnail.url}'>"
-  end
-  html
-end
 
 get "/user_search" do
   client = Instagram.client(:access_token => session[:access_token])
@@ -179,25 +172,7 @@ get "/location_search" do
   html
 end
 
-get "/location_search_4square" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1>Search for a location by Fousquare ID (v2)</h1>"
-  for location in client.location_search("3fd66200f964a520c5f11ee3")
-    html << "<li> #{location.name} <a href='https://www.google.com/maps/preview/@#{location.latitude},#{location.longitude},19z'>Map</a></li>"
-  end
-  html
-end
 
-get "/tags" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1>Search for tags, get tag info and get media by tag</h1>"
-  tags = client.tag_search('cat')
-  html << "<h2>Tag Name = #{tags[0].name}. Media Count =  #{tags[0].media_count}. </h2><br/><br/>"
-  for media_item in client.tag_recent_media(tags[0].name)
-    html << "<img src='#{media_item.images.thumbnail.url}'>"
-  end
-  html
-end
 
 get "/limits" do
   client = Instagram.client(:access_token => session[:access_token])
