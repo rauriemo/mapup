@@ -48,6 +48,8 @@ get "/index" do
     user.pic_count =  @user.counts.media
     user.save
   end
+  erb :index
+end
 
 # image location:
 # client.user_recent_media[#]
@@ -76,8 +78,6 @@ get "/index" do
  #   "width"=>640,
  #   "height"=>640}}
 
-  erb :index
-end
 
 # return array with all the images in user media
 get "/users/self/feed" do
@@ -97,19 +97,37 @@ get "/users/self/feed" do
   return image_container.to_json
 end
 
-get "/user_recent_media" do
-  client = Instagram.client(access_token: session[:access_token])
+get "/user_media_feed" do
+  client = Instagram.client(:access_token => session[:access_token])
   user = client.user
-  # p "client"
-  # pp client
-  # p "user: "
-  # pp user
-  html = "<h1>#{user.username}'s recent media</h1>"
-  for media_item in client.user_recent_media
-    # p media_item
-    html << "<div style='float:left;'><img src='#{media_item.images.thumbnail.url}'><br/> <a href='/media_like/#{media_item.id}'>Like</a>  <a href='/media_unlike/#{media_item.id}'>Un-Like</a>  <br/>LikesCount=#{media_item.likes[:count]}</div>"
+
+  page_1 = client.user_media_feed(777)
+
+  page_2_max_id = page_1.pagination.next_max_id
+  page_2 = client.user_recent_media(777, :max_id => page_2_max_id ) unless page_2_max_id.nil?
+
+  image_container = []
+
+  page_1.each do |image|
+    if image.type == "image" && image.location
+      image_container << {
+        url: image.images.standard_resolution.url,
+        thumbnail: image.images.thumbnail.url,
+        location: image.location,
+        }
+    end
   end
-  html
+  page_2.each do |image|
+    if image.type == "image" && image.location
+      image_container << {
+        url: image.images.standard_resolution.url,
+        thumbnail: image.images.thumbnail.url,
+        location: image.location,
+        }
+    end
+  end
+  pp image_container
+  return image_container.to_json
 end
 
 get '/media_like/:id' do
@@ -124,24 +142,7 @@ get '/media_unlike/:id' do
   redirect "/user_recent_media"
 end
 
-get "/user_media_feed" do
-  client = Instagram.client(:access_token => session[:access_token])
-  user = client.user
-  html = "<h1>#{user.username}'s media feed</h1>"
 
-  page_1 = client.user_media_feed(777)
-  page_2_max_id = page_1.pagination.next_max_id
-  page_2 = client.user_recent_media(777, :max_id => page_2_max_id ) unless page_2_max_id.nil?
-  html << "<h2>Page 1</h2><br/>"
-  for media_item in page_1
-    html << "<img src='#{media_item.images.thumbnail.url}'>"
-  end
-  html << "<h2>Page 2</h2><br/>"
-  for media_item in page_2
-    html << "<img src='#{media_item.images.thumbnail.url}'>"
-  end
-  html
-end
 
 get "/location_recent_media" do
   client = Instagram.client(:access_token => session[:access_token])

@@ -12,3 +12,7 @@
 nav a{
   display: inline;
 }
+
+nav {
+  height: 150px;
+}
