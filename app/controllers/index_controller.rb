@@ -51,6 +51,7 @@ get "/index" do
   erb :index
 end
 
+# FOR REFERENCE:
 # image location:
 # client.user_recent_media[#]
 
@@ -97,6 +98,7 @@ get "/users/self/feed" do
   return image_container.to_json
 end
 
+# return array with first two pages of news feed
 get "/user_media_feed" do
   client = Instagram.client(:access_token => session[:access_token])
   user = client.user
@@ -130,59 +132,24 @@ get "/user_media_feed" do
   return image_container.to_json
 end
 
-get '/media_like/:id' do
-  client = Instagram.client(:access_token => session[:access_token])
-  client.like_media("#{params[:id]}")
-  redirect "/user_recent_media"
-end
+# REFERENCE:
+# get "/user_search" do
+#   client = Instagram.client(:access_token => session[:access_token])
+#   html = "<h1>Search for users on instagram, by name or usernames</h1>"
+#   for user in client.user_search("instagram")
+#     html << "<li> <img src='#{user.profile_picture}'> #{user.username} #{user.full_name}</li>"
+#   end
+#   html
+# end
 
-get '/media_unlike/:id' do
-  client = Instagram.client(:access_token => session[:access_token])
-  client.unlike_media("#{params[:id]}")
-  redirect "/user_recent_media"
-end
-
-
-
-get "/location_recent_media" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1>Media from the Instagram Office</h1>"
-  for media_item in client.location_recent_media(514276)
-    html << "<img src='#{media_item.images.thumbnail.url}'>"
-  end
-  html
-end
-
-
-
-get "/user_search" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1>Search for users on instagram, by name or usernames</h1>"
-  for user in client.user_search("instagram")
-    html << "<li> <img src='#{user.profile_picture}'> #{user.username} #{user.full_name}</li>"
-  end
-  html
-end
-
-get "/location_search" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1>Search for a location by lat/lng with a radius of 5000m</h1>"
-  for location in client.location_search("48.858844","2.294351","5000")
-    html << "<li> #{location.name} <a href='https://www.google.com/maps/preview/@#{location.latitude},#{location.longitude},19z'>Map</a></li>"
-  end
-  html
-end
-
-
-
-get "/limits" do
-  client = Instagram.client(:access_token => session[:access_token])
-  html = "<h1/>View API Rate Limit and calls remaining</h1>"
-  response = client.utils_raw_response
-  html << "Rate Limit = #{response.headers[:x_ratelimit_limit]}.  <br/>Calls Remaining = #{response.headers[:x_ratelimit_remaining]}"
-
-  html
-end
+# get "/location_search" do
+#   client = Instagram.client(:access_token => session[:access_token])
+#   html = "<h1>Search for a location by lat/lng with a radius of 5000m</h1>"
+#   for location in client.location_search("48.858844","2.294351","5000")
+#     html << "<li> #{location.name} <a href='https://www.google.com/maps/preview/@#{location.latitude},#{location.longitude},19z'>Map</a></li>"
+#   end
+#   html
+# end
 
 get "/sessions/logout" do
   session["access_token"] = nil
