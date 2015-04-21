@@ -138,18 +138,6 @@ $(document).ready(function() {
     // thumbnail:
     // url:
 
-    // create map object and assign to
-    // map-canvas div
-    // map = new google.maps.Map(document.getElementById('map-canvas'),
-    //     mapOptions);
-
-    // //set the map type it starts at
-    // map.mapTypes.set('map_style', styledMap);
-    // map.setMapTypeId('map_style');
-
-    // //limits zoomout to zoom 3
-    // var opt = { minZoom: 3};
-    // map.setOptions(opt);
 
     while(marker_container[0]){
      marker_container.pop().setMap(null);
@@ -210,11 +198,17 @@ $(document).ready(function() {
   }
 
   function showPosition(userLatitude, userLongitude){
-          lat= userLatitude;
-          lon= userLongitude;
-          latlon=new google.maps.LatLng(lat, lon);
-          map.panTo(latlon);
-          map.setZoom(15);
+    lat= userLatitude;
+    lon= userLongitude;
+    latlon=new google.maps.LatLng(lat, lon);
+    map.panTo(latlon);
+    map.setZoom(15);
+    var circle = new google.maps.Circle({
+      map: map,
+      center: latlon,
+      radius: 100,
+      fillColor: '#5CB8E6',
+    });
   }
 
   $("#profile_pic").on("click", getUserPics);
