@@ -103,10 +103,10 @@ get "/user_media_feed" do
   client = Instagram.client(:access_token => session[:access_token])
   user = client.user
 
-  page_1 = client.user_media_feed(777)
+  page_1 = client.user_media_feed(user.counts.media)
 
   page_2_max_id = page_1.pagination.next_max_id
-  page_2 = client.user_recent_media(777, :max_id => page_2_max_id ) unless page_2_max_id.nil?
+  page_2 = client.user_recent_media(user.counts.media, :max_id => page_2_max_id ) unless page_2_max_id.nil?
 
   image_container = []
 
@@ -128,7 +128,6 @@ get "/user_media_feed" do
         }
     end
   end
-  pp image_container
   return image_container.to_json
 end
 
