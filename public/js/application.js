@@ -63,7 +63,6 @@ function initialize() {
 
   //populate map with markers for each user picture and create infowindows on click
   function populateMap(response) {
-
     var infoWindow = new google.maps.InfoWindow({content: ""});
 
     for (var i=0; i<response.length;i++){
@@ -137,7 +136,6 @@ $(document).ready(function() {
       // longitude: -122.
     // thumbnail:
     // url:
-
     while(marker_container[0]){
      marker_container.pop().setMap(null);
     }
