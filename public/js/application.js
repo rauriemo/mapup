@@ -137,8 +137,6 @@ $(document).ready(function() {
       // longitude: -122.
     // thumbnail:
     // url:
-    debugger
-
 
     while(marker_container[0]){
      marker_container.pop().setMap(null);
@@ -212,6 +210,18 @@ $(document).ready(function() {
     });
   }
 
+  // function logoutUser(event){
+  //   event.preventDefault();
+  //   $.ajax({
+  //     url: "https://instagram.com/accounts/logout/",
+  //       }).done(redirectToHome)
+  // }
+
+  // function redirectToHome(){
+  //   location.reload();
+  // }
+
+  // $("#logout").on("click", logoutUser)
   $("#profile_pic").on("click", getUserPics);
   $("#news_feed").on("click", getNewsFeed);
   $("#center").on("click", currentLocation);

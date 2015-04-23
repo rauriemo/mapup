@@ -2,6 +2,7 @@ require "sinatra"
 require "instagram"
 require "dotenv"
 require "httparty"
+require "pp"
 
 Dotenv.load
 enable :sessions
@@ -87,11 +88,16 @@ get "/users/self/feed" do
 
   client = Instagram.client(access_token: session[:access_token])
   user = client.user
-  # api = Insta::Client.new
-  # media = JSON.parse(api.get_user_pictures(user.counts.media, session[:access_token], user.id))
 
-  media = client.user_recent_media(user.id, {count: user.counts.media})
+  max_id = client.user_recent_media[0]["id"]
+  first_pic = client.user_recent_media[0]
+  media = client.user_recent_media({max_id: max_id, count: user.counts.media})
   image_container = []
+  image_container << {
+        url: first_pic.images.standard_resolution.url,
+        thumbnail: first_pic.images.thumbnail.url,
+        location: first_pic.location,
+        }
   media.each do |image|
     if image["location"]
       if image["location"]["latitude"]
@@ -103,6 +109,7 @@ get "/users/self/feed" do
       end
     end
   end
+
   return image_container.to_json
 end
 
@@ -111,7 +118,7 @@ get "/user_media_feed" do
   client = Instagram.client(:access_token => session[:access_token])
   user = client.user
 
-  page_1 = client.user_media_feed(user.counts.media)
+  page_1 = client.user_media_feed
 
   page_2_max_id = page_1.pagination.next_max_id
   page_2 = client.user_media_feed( :max_id => page_2_max_id ) unless page_2_max_id.nil?
@@ -129,6 +136,7 @@ get "/user_media_feed" do
       end
     end
   end
+  p image_container.count
   page_2.each do |image|
     if image["location"]
       if image["location"]["latitude"]
@@ -140,6 +148,7 @@ get "/user_media_feed" do
       end
     end
   end
+  p image_container.count
   return image_container.to_json
 end
 

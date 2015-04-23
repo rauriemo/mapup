@@ -47,3 +47,8 @@ html{
   height:135px;
   width:240px;
 }
+
+.gmnoprint a, .gmnoprint span {
+    display:none;
+}
+
