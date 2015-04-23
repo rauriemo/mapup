@@ -1,0 +1,49 @@
+.canvas_wrapper {
+  padding: 0;
+  margin: 0;
+  background-color: #BBCAF8;
+}
+
+.profile_pic {
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+
+nav a {
+  color: inherit;
+}
+
+nav {
+  height: 150px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+  margin-left: 300px;
+}
+
+.nav_wrapper {
+  height: 150px;
+  width: 100%;
+  display: inline-block;
+}
+
+input {
+  padding: 30px;
+  position: relative;
+  bottom: 35px;
+}
+
+html{
+    position: fixed;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+#logo {
+  display: inline-block;
+  position: relative;
+  right: 0;
+  height:135px;
+  width:240px;
+}
