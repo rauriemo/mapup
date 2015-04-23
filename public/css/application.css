@@ -49,6 +49,10 @@ html{
 }
 
 .gmnoprint a, .gmnoprint span {
-    display:none;
+  display:none;
+}
+
+.pic_info {
+  font-family: 'Arial Rounded MT Bold';
 }
 

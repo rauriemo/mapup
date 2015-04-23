@@ -49,6 +49,7 @@
   var opt = { minZoom: 3};
   map.setOptions(opt);
 
+  var oms = new OverlappingMarkerSpiderfier(map);
   var marker_container = [];
 
 
@@ -87,19 +88,20 @@ function initialize() {
       marker_container.push(marker)
 
       //create content for infowindow
-      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div>"+response[i].username+" "+response[i].tags+"</div>";
+      marker.desc = "<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div class=\"pic_info\">"+response[i].username+" "+response[i].tags+"</div>";
+
+      oms.addMarker(marker);
 
       //bind content of infowindow listener
-      bindInfoWindow(marker, map, infoWindow, contentString);
+      // bindInfoWindow(marker, map, infoWindow, marker.desc);
+
+      oms.addListener('click', function(marker, event) {
+          infoWindow.setContent(marker.desc);
+          infoWindow.open(map, marker);
+      });
+
     }
 
-  }
-
-  function bindInfoWindow(marker, map, infowindow, description) {
-      google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(description);
-          infowindow.open(map, marker);
-      });
   }
 
 }
@@ -165,7 +167,7 @@ $(document).ready(function() {
 
 
       //create content for infowindow
-      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div>"+response[i].username+" "+response[i].tags+"</div>";
+      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div class=\"pic_info\">"+response[i].username+" "+response[i].tags+"</div>";
 
       //bind content of infowindow listener
       bindInfoWindow(marker, map, infoWindow, contentString);
@@ -217,7 +219,8 @@ $(document).ready(function() {
   // }
 
   // function redirectToHome(){
-  //   location.reload();
+  //   debugger
+  //   // location.reload();
   // }
 
   // $("#logout").on("click", logoutUser)
@@ -225,3 +228,5 @@ $(document).ready(function() {
   $("#news_feed").on("click", getNewsFeed);
   $("#center").on("click", currentLocation);
 });
+
+
