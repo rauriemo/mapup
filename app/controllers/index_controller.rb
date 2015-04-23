@@ -64,7 +64,6 @@ get "/users/self/feed" do
   image_container = []
   count = 0
   next_max_id = nil
-  pp client.user_recent_media[0]
   while count < user.counts.media do
     if next_max_id != nil
       current_page = client.user_recent_media(user.id, {count: 33, max_id: next_max_id})
@@ -86,9 +85,7 @@ get "/users/self/feed" do
       end
     end
     count += current_page.count
-    p count
   end
-
   return image_container.to_json
 end
 
@@ -97,40 +94,7 @@ get "/user_media_feed" do
   client = Instagram.client(:access_token => session[:access_token])
   user = client.user
 
-  # page_1 = client.user_media_feed
-
-  # page_2_max_id = page_1.pagination.next_max_id
-  # page_2 = client.user_media_feed( :max_id => page_2_max_id ) unless page_2_max_id.nil?
-
   image_container = []
-
-  # page_1.each do |image|
-  #   if image["location"]
-  #     if image["location"]["latitude"]
-  #     image_container << {
-  #       url: image.images.standard_resolution.url,
-  #       thumbnail: image.images.thumbnail.url,
-  #       location: image.location,
-  #       tags: image.tags,
-  #       username: image.user.username,
-  #       }
-  #     end
-  #   end
-  # end
-  # p image_container.count
-  # page_2.each do |image|
-  #   if image["location"]
-  #     if image["location"]["latitude"]
-  #     image_container << {
-  #       url: image.images.standard_resolution.url,
-  #       thumbnail: image.images.thumbnail.url,
-  #       location: image.location,
-  #       tags: image.tags,
-  #       username: image.user.username,
-  #       }
-  #     end
-  #   end
-  # end
 
   count = 0
   next_max_id = nil
@@ -151,14 +115,11 @@ get "/user_media_feed" do
           tags: image.tags,
           username: image.user.username,
           }
-          pp image.id
         end
       end
     end
     count += current_page.count
-    p count
   end
-  p image_container.count
   return image_container.to_json
 end
 
