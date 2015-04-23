@@ -87,22 +87,35 @@ get "/users/self/feed" do
 
   client = Instagram.client(access_token: session[:access_token])
   user = client.user
-  # api = Insta::Client.new
-  # media = JSON.parse(api.get_user_pictures(user.counts.media, session[:access_token], user.id))
 
-  media = client.user_recent_media(user.id, {count: user.counts.media})
+  # media = client.user_recent_media(user.id, {count: user.counts.media})
+
   image_container = []
-  media.each do |image|
-    if image["location"]
-      if image["location"]["latitude"]
-      image_container << {
-        url: image.images.standard_resolution.url,
-        thumbnail: image.images.thumbnail.url,
-        location: image.location,
-        }
+
+  count = 0
+  next_max_id = nil
+  while count < user.counts.media do
+    if next_max_id != nil
+      current_page = client.user_recent_media(user.id, {count: 33, max_id: next_max_id})
+    else
+      current_page = client.user_recent_media(user.id, {count: 33})
+    end
+    next_max_id = client.user_recent_media.pagination.next_max_id
+    current_page.each do |image|
+      if image["location"]
+        if image["location"]["latitude"]
+        image_container << {
+          url: image.images.standard_resolution.url,
+          thumbnail: image.images.thumbnail.url,
+          location: image.location,
+          }
+        end
       end
     end
+    count += current_page.count
+    p count
   end
+
   return image_container.to_json
 end
 
