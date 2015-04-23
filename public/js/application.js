@@ -92,18 +92,12 @@ function initialize() {
 
       oms.addMarker(marker);
 
-      //bind content of infowindow listener
-      // bindInfoWindow(marker, map, infoWindow, marker.desc);
-
       oms.addListener('click', function(marker, event) {
           infoWindow.setContent(marker.desc);
           infoWindow.open(map, marker);
       });
-
     }
-
   }
-
 }
 
 //event listener to run initialize method on window complete load
@@ -131,13 +125,9 @@ $(document).ready(function() {
     }).done(populateMap)
   }
 
+  //populate map with markers for each user picture and create infowindows on click
   function populateMap(response) {
-    // response is array of objects in format:
-    //location: Object
-      // latitude: 37.781923821
-      // longitude: -122.
-    // thumbnail:
-    // url:
+
     while(marker_container[0]){
      marker_container.pop().setMap(null);
     }
@@ -155,7 +145,7 @@ $(document).ready(function() {
       };
 
       //place marker
-      marker = new google.maps.Marker({
+      var marker = new google.maps.Marker({
             position: {
               lat: response[i].location.latitude,
               lng: response[i].location.longitude},
@@ -165,21 +155,16 @@ $(document).ready(function() {
 
       marker_container.push(marker)
 
-
       //create content for infowindow
-      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div class=\"pic_info\">"+response[i].username+" "+response[i].tags+"</div>";
+      marker.desc = "<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div class=\"pic_info\">"+response[i].username+" "+response[i].tags+"</div>";
 
-      //bind content of infowindow listener
-      bindInfoWindow(marker, map, infoWindow, contentString);
-    }
+      oms.addMarker(marker);
 
-  }
-
-  function bindInfoWindow(marker, map, infowindow, description) {
-      google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(description);
-          infowindow.open(map, marker);
+      oms.addListener('click', function(marker, event) {
+          infoWindow.setContent(marker.desc);
+          infoWindow.open(map, marker);
       });
+    }
   }
 
   function currentLocation(){
