@@ -137,6 +137,7 @@ $(document).ready(function() {
       // longitude: -122.
     // thumbnail:
     // url:
+    debugger
 
 
     while(marker_container[0]){

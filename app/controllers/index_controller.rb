@@ -1,15 +1,17 @@
 require "sinatra"
 require "instagram"
-require "pp"
+require "dotenv"
+require "httparty"
 
+Dotenv.load
 enable :sessions
 
 # redirect url after oath
 CALLBACK_URL = "http://localhost:9393/oauth/callback"
 
 Instagram.configure do |config|
-  config.client_id = "98808b1116e84d428f75eff3aafa9637"
-  config.client_secret = "def45127fa5840878ee4e2ee6cd1cfd5"
+  config.client_id = ENV['CLIENT_ID']
+  config.client_secret = ENV['CLIENT_SECRET']
 end
 
 # redirect to instagram oath
@@ -82,17 +84,23 @@ end
 
 # return array with all the images in user media
 get "/users/self/feed" do
+
   client = Instagram.client(access_token: session[:access_token])
   user = client.user
+  # api = Insta::Client.new
+  # media = JSON.parse(api.get_user_pictures(user.counts.media, session[:access_token], user.id))
+
   media = client.user_recent_media(user.id, {count: user.counts.media})
   image_container = []
   media.each do |image|
-    if image.type == "image"
+    if image["location"]
+      if image["location"]["latitude"]
       image_container << {
         url: image.images.standard_resolution.url,
         thumbnail: image.images.thumbnail.url,
         location: image.location,
         }
+      end
     end
   end
   return image_container.to_json
@@ -111,21 +119,26 @@ get "/user_media_feed" do
   image_container = []
 
   page_1.each do |image|
-    if image.type == "image" && image.location
+    if image["location"]
+      if image["location"]["latitude"]
       image_container << {
         url: image.images.standard_resolution.url,
         thumbnail: image.images.thumbnail.url,
         location: image.location,
         }
+      end
     end
   end
+  p image_container.count
   page_2.each do |image|
-    if image.type == "image" && image.location
+    if image["location"]
+      if image["location"]["latitude"]
       image_container << {
         url: image.images.standard_resolution.url,
         thumbnail: image.images.thumbnail.url,
         location: image.location,
         }
+      end
     end
   end
   return image_container.to_json
