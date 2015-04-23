@@ -88,7 +88,7 @@ function initialize() {
       marker_container.push(marker)
 
       //create content for infowindow
-      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\">";
+      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div>"+response[i].username+" "+response[i].tags+"</div>";
 
       //bind content of infowindow listener
       bindInfoWindow(marker, map, infoWindow, contentString);
@@ -165,8 +165,9 @@ $(document).ready(function() {
 
       marker_container.push(marker)
 
+
       //create content for infowindow
-      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\">";
+      var contentString ="<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div>"+response[i].username+" "+response[i].tags+"</div>";
 
       //bind content of infowindow listener
       bindInfoWindow(marker, map, infoWindow, contentString);

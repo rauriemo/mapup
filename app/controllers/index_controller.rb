@@ -54,34 +54,6 @@ get "/index" do
   erb :index
 end
 
-# FOR REFERENCE:
-# image location:
-# client.user_recent_media[#]
-
-# .location returns:
-# {"latitude"=>37.781923821, "longitude"=>-122.408287622}
-
-# .tags returns hashtags
-
-# .type returns "image" or video
-
-# .images gives this hash:
- #  {"low_resolution"=>
- #  {"url"=>
- #    "https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s306x306/e15/11142246_666301880162726_1798201019_n.jpg",
- #   "width"=>306,
- #   "height"=>306},
- # "thumbnail"=>
- #  {"url"=>
- #    "https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/s150x150/e15/11142246_666301880162726_1798201019_n.jpg",
- #   "width"=>150,
- #   "height"=>150},
- # "standard_resolution"=>
- #  {"url"=>
- #    "https://scontent.cdninstagram.com/hphotos-xaf1/t51.2885-15/e15/11142246_666301880162726_1798201019_n.jpg",
- #   "width"=>640,
- #   "height"=>640}}
-
 
 # return array with all the images in user media
 get "/users/self/feed" do
@@ -90,7 +62,7 @@ get "/users/self/feed" do
   user = client.user
 
   image_container = []
-
+  pp client.user_recent_media[1]
   count = 0
   next_max_id = nil
   while count < user.counts.media do
@@ -107,6 +79,8 @@ get "/users/self/feed" do
           url: image.images.standard_resolution.url,
           thumbnail: image.images.thumbnail.url,
           location: image.location,
+          tags: image.tags,
+          username: image.user.username,
           }
         end
       end
@@ -137,6 +111,8 @@ get "/user_media_feed" do
         url: image.images.standard_resolution.url,
         thumbnail: image.images.thumbnail.url,
         location: image.location,
+        tags: image.tags,
+        username: image.user.username,
         }
       end
     end
@@ -149,6 +125,8 @@ get "/user_media_feed" do
         url: image.images.standard_resolution.url,
         thumbnail: image.images.thumbnail.url,
         location: image.location,
+        tags: image.tags,
+        username: image.user.username,
         }
       end
     end
