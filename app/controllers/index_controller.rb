@@ -119,7 +119,9 @@ get "/user_media_feed" do
       end
     end
     count += current_page.count
+    p count
   end
+  p image_container.count
   return image_container.to_json
 end
 

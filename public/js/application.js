@@ -128,11 +128,14 @@ $(document).ready(function() {
   //populate map with markers for each user picture and create infowindows on click
   function populateMap(response) {
 
+    var infoWindow = new google.maps.InfoWindow({content: ""});
+
     while(marker_container[0]){
-     marker_container.pop().setMap(null);
+      marker_container.pop().setMap(null);
     }
 
-    var infoWindow = new google.maps.InfoWindow({content: ""});
+    oms.clearListeners('click');
+    oms.clearMarkers();
 
     for (var i=0; i<response.length;i++){
 
