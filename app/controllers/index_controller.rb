@@ -89,7 +89,7 @@ get "/users/self/feed" do
   return image_container.to_json
 end
 
-# return array with first two pages of news feed
+# return array with first 100 geotagged images of news feed
 get "/user_media_feed" do
   client = Instagram.client(:access_token => session[:access_token])
   user = client.user
