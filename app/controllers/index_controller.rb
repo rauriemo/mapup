@@ -4,7 +4,7 @@ require "instagram"
 require "httparty"
 require "pp"
 
-Dotenv.load
+# Dotenv.load
 enable :sessions
 
 # redirect url after oath
