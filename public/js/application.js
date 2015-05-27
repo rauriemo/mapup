@@ -38,7 +38,7 @@
 
   //create map object and assign to
   //map-canvas div
-  map = new google.maps.Map(document.getElementById('map-canvas'),
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
   //set the map type it starts at
@@ -52,19 +52,17 @@
   var oms = new OverlappingMarkerSpiderfier(map);
   var marker_container = [];
 
-
-function initialize() {
-
-  //ajax request that returns array of user pictures on page refresh
-   $.ajax({
-        type: 'get',
-        url: '/users/self/feed',
-        dataType: "json",
-    }).done(populateMap)
-
   //populate map with markers for each user picture and create infowindows on click
   function populateMap(response) {
+
     var infoWindow = new google.maps.InfoWindow({content: ""});
+
+    while(marker_container[0]){
+      marker_container.pop().setMap(null);
+    }
+
+    oms.clearListeners('click');
+    oms.clearMarkers();
 
     for (var i=0; i<response.length;i++){
 
@@ -98,14 +96,23 @@ function initialize() {
       });
     }
   }
+
+
+function initialize() {
+
+  //ajax request that returns array of user pictures on page refresh
+   $.ajax({
+        type: 'get',
+        url: '/users/self/feed',
+        dataType: "json",
+    }).done(populateMap)
+
 }
 
 //event listener to run initialize method on window complete load
 google.maps.event.addDomListener(window, 'load', initialize);
 
 $(document).ready(function() {
-
-  // var map;
 
   function getUserPics(event){
     event.preventDefault();
@@ -123,48 +130,6 @@ $(document).ready(function() {
       url: '/user_media_feed',
       dataType: "json",
     }).done(populateMap)
-  }
-
-  //populate map with markers for each user picture and create infowindows on click
-  function populateMap(response) {
-
-    while(marker_container[0]){
-     marker_container.pop().setMap(null);
-    }
-
-    var infoWindow = new google.maps.InfoWindow({content: ""});
-
-    for (var i=0; i<response.length;i++){
-
-      //reset image and marker size
-      var icon = {
-          url: response[i].thumbnail, // url
-          scaledSize: new google.maps.Size(50, 50), // scaled size
-          origin: new google.maps.Point(0,0), // origin
-          anchor: new google.maps.Point(0, 0) // anchor
-      };
-
-      //place marker
-      var marker = new google.maps.Marker({
-            position: {
-              lat: response[i].location.latitude,
-              lng: response[i].location.longitude},
-            map: map,
-            icon: icon,
-      })
-
-      marker_container.push(marker)
-
-      //create content for infowindow
-      marker.desc = "<img src=\""+response[i].url+"\" height=\"370\" width=\"370\"><div class=\"pic_info\">"+response[i].username+" "+response[i].tags+"</div>";
-
-      oms.addMarker(marker);
-
-      oms.addListener('click', function(marker, event) {
-          infoWindow.setContent(marker.desc);
-          infoWindow.open(map, marker);
-      });
-    }
   }
 
   function currentLocation(){
@@ -196,19 +161,6 @@ $(document).ready(function() {
     });
   }
 
-  // function logoutUser(event){
-  //   event.preventDefault();
-  //   $.ajax({
-  //     url: "https://instagram.com/accounts/logout/",
-  //       }).done(redirectToHome)
-  // }
-
-  // function redirectToHome(){
-  //   debugger
-  //   // location.reload();
-  // }
-
-  // $("#logout").on("click", logoutUser)
   $("#profile_pic").on("click", getUserPics);
   $("#news_feed").on("click", getNewsFeed);
   $("#center").on("click", currentLocation);

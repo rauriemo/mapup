@@ -10,6 +10,11 @@
   float: left;
 }
 
+#profile_pic:hover {
+  cursor: pointer;
+
+}
+
 nav a {
   color: inherit;
 }
@@ -44,8 +49,8 @@ html{
   display: inline-block;
   position: relative;
   right: 0;
-  height:135px;
-  width:240px;
+  height:150px;
+  width:270px;
 }
 
 .gmnoprint a, .gmnoprint span {
@@ -56,3 +61,9 @@ html{
   font-family: 'Arial Rounded MT Bold';
 }
 
+input[type="button"] {
+  font-family: 'Arial Rounded MT Bold';
+  background-color: #BFC6DD;
+  color: white;
+  border-radius: 15px;
+}
