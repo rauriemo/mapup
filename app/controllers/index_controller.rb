@@ -8,7 +8,7 @@ require "pp"
 enable :sessions
 
 # redirect url after oath
-CALLBACK_URL = "http://localhost:9393/oauth/callback"
+CALLBACK_URL = "http://mapup.herokuapp.com/oauth/callback"
 
 Instagram.configure do |config|
   config.client_id = ENV['CLIENT_ID']
