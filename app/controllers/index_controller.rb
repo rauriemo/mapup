@@ -1,6 +1,6 @@
 require "sinatra"
 require "instagram"
-require "dotenv"
+# require "dotenv"
 require "httparty"
 require "pp"
 
