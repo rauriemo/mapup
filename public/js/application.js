@@ -161,16 +161,10 @@ $(document).ready(function() {
     });
   }
 
-  var refreshPage = function(event){
-    event.done(function(){
-      window.location.href = "http://mapup.herokuapp.com";
-    })
-  }
 
   $("#profile_pic").on("click", getUserPics);
   $("#news_feed").on("click", getNewsFeed);
   $("#center").on("click", currentLocation);
-  $("#logout").on("click", refreshPage)
 });
 
 
