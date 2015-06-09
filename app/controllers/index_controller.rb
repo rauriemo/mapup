@@ -1,10 +1,10 @@
 require "sinatra"
 require "instagram"
-require "dotenv"
+# require "dotenv"
 require "httparty"
 require "pp"
 
-Dotenv.load
+# Dotenv.load
 enable :sessions
 
 # redirect url after oath
