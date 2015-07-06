@@ -93,7 +93,6 @@ end
 get "/user_media_feed" do
   client = Instagram.client(:access_token => session[:access_token])
   user = client.user
-
   image_container = []
 
   count = 0
@@ -106,6 +105,7 @@ get "/user_media_feed" do
     end
     next_max_id = current_page.pagination.next_max_id
     current_page.each do |image|
+      puts image
       if image["location"]
         if image["location"]["latitude"]
         image_container << {
@@ -144,8 +144,18 @@ end
 #   html
 # end
 
-get "/sessions/logout" do
-  session["access_token"] = nil
-  session["session_id"] = nil
-  redirect "/"
+# get "/sessions/logout" do
+#   session["access_token"] = nil
+#   session["session_id"] = nil
+#   redirect "/"
+# end
+
+get '/media_like/:id' do
+  client = Instagram.client(:access_token => session[:access_token])
+  client.like_media("#{params[:id]}")
+end
+
+get '/media_unlike/:id' do
+  client = Instagram.client(:access_token => session[:access_token])
+  client.unlike_media("#{params[:id]}")
 end
