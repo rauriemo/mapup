@@ -105,7 +105,7 @@ get "/user_media_feed" do
     end
     next_max_id = current_page.pagination.next_max_id
     current_page.each do |image|
-      puts image
+      pp image
       if image["location"]
         if image["location"]["latitude"]
         image_container << {
