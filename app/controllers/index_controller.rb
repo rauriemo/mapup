@@ -37,6 +37,7 @@ end
 get "/index" do
   client = Instagram.client(access_token: session[:access_token])
   @user = client.user
+  @first_time
 
   # create user if new user, reset profile pic and pic counter either way
   if !User.where(username: @user.username).first
@@ -45,10 +46,12 @@ get "/index" do
       profile_pic: @user.profile_picture,
       pic_count: @user.counts.media,
       )
+    @first_time = true;
   else
+    @first_time = false;
     user = User.where(username: @user.username).first
     user.profile_pic = @user.profile_picture
-    user.pic_count =  @user.counts.media
+    user.pic_count = @user.counts.media
     user.save
   end
   erb :index
