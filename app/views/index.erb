@@ -1,16 +1,33 @@
   <div id="map-canvas"></div>
 
-  <div class="canvas_wrapper">
-    <div class="nav_wrapper">
-      <img id="profile_pic" src="<%=@user.profile_picture%>"/>
-      <nav>
-          <input id="news_feed" type="button" value="PIC FEED"/>
-          <input id="center" type="button" value="MY LOCATION"/>
-          <a id="logout" href="https://instagram.com/accounts/logout/" >
-            <input type="button" value="LOGOUT"/>
+  <div class="bottom_wrapper pos-rl ht-20">
+    <div class="bottom row span-12-t span-12-d pos-rl full-ht">
+      <div class="col span-2-d span-2-t test">
+        <img id="profile_pic" src="<%=@user.profile_picture%>"/>
+      </div>
+      <% if @first_time==true %>
+        <div class="col span-2-d span-2-t test">
+          <p>click on your profile picture to return to your gallery</p>
+        </div>
+        <div class="test full-ht pos-rl col span-2-d span-2-t">
+            <input id="news_feed" class="full-ht  pd-23" type="button" value="PIC FEED"/>
+        </div>
+      <% else %>
+        <div class="test col span-4-d span-4-t full-ht pos-rl">
+            <input id="news_feed" class="full-ht full-wd pos-rl" type="button" value="PIC FEED"/>
+        </div>
+      <% end %>
+      <div class="test col span-2-d span-2-t pos-rl full-ht">
+          <input id="center" class="pos-rl full-wd full-ht" type="button" value="MY LOCATION"/>
+      </div>
+      <div class="test col span-2-d span-2-t full-ht pos-rl">
+          <a id="logout" class="pos-rl full-ht"href="https://instagram.com/accounts/logout/" >
+            <input type="button" class="full-wd pos-rl full-ht" value="LOGOUT"/>
           </a>
-      </nav>
-      <img id="logo" src="/images/Mapup.png"/>
+      </div>
+      <div class="test col span-2-d span-2-t mrgn-rt pos-rl full-ht">
+        <img id="logo" class="" src="/images/Mapup.png"/>
+      </div>
     </div>
   </div>
   <iframe name="logoutIframe" width="0" height="0" ></iframe>

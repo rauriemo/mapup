@@ -1,4 +1,8 @@
-.canvas_wrapper {
+/*.test {
+  border: 1px solid red;
+}*/
+
+.bottom{
   padding: 0;
   margin: 0;
   background-color: #BBCAF8;
@@ -10,22 +14,25 @@
   float: left;
 }
 
+.dsp-tb {
+  display: table;
+}
+
+.dsp-cel {
+  display: table-cell;
+}
+
 #profile_pic:hover {
   cursor: pointer;
-
 }
 
 nav a {
   color: inherit;
 }
 
-nav {
-  height: 150px;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  margin-left: 300px;
-}
+/*.nav {
+  padding-top: 1.4%;
+}*/
 
 .nav_wrapper {
   height: 150px;
@@ -33,10 +40,56 @@ nav {
   display: inline-block;
 }
 
-input {
-  padding: 30px;
+.vrt-algn {
+  vertical-align: middle;
+}
+
+.pos-rl {
   position: relative;
-  bottom: 35px;
+}
+
+.pos-abs {
+  position: absolute;
+}
+
+.pd-23 {
+  padding: 23%;
+}
+
+.pd-10 {
+  padding: 10%;
+}
+
+.top-50 {
+  top: 50%;
+}
+
+.lft-50 {
+  left: 50%;
+}
+
+.wd-13 {
+  width: 100%;
+}
+
+.mrgn-rt {
+  text-align: center;
+}
+
+.full-ht {
+  height: 100%;
+}
+
+.ht-20{
+  height: 20%;
+}
+
+.full-wd {
+  width: 100%;
+}
+
+.ht-inhrt {
+  height: inherit;
 }
 
 html{
@@ -48,7 +101,7 @@ html{
 #logo {
   display: inline-block;
   position: relative;
-  right: 0;
+  right: 15%;
   height:150px;
   width:270px;
 }
@@ -66,4 +119,7 @@ input[type="button"] {
   background-color: #BFC6DD;
   color: white;
   border-radius: 15px;
+  position: relative;
+  height: inherit;
 }
+
